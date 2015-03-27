@@ -1,0 +1,45 @@
+config:
+  enabled:
+    type: checkbox
+    help: Do you want to activate Canada Post
+  mode_production:
+    type: checkbox
+    label: Use the production mode ?
+    help: if not checked the test mode will be used
+  customer_number:
+    type: text
+    help: Your Canada Post Customer Number
+  username:
+    type: text
+    required: false
+    help: Your Canada Post API Username in Production mode
+  password:
+    type: text
+    required: false
+    help: Your Canada Post API password in Production mode
+  test_username:
+    type: text
+    required: false
+    help: Your Canada Post API Username in Test mode
+  test_password:
+    type: text
+    required: false
+    help: Your Canada Post API password in Test mode
+  quote_type_commercial:
+    type: checkbox
+    label: Commercial quote type ?
+    help: If checked you should also provide the Contract Id. If not checked, counter will be used and regular prices will be displayed.
+  contract_id:
+    type: text
+    required: false
+    help: For commercial/contracted rates only
+  insurance: checkbox
+  origin_postalcode:
+    type: text
+    label: Origin Zip/Postal Code
+    help: from which the parcel will be sent
+  disallowed_services:
+    type: text
+    required: false
+    label: Disallowed Shipping Methods
+    help: The Canada Post services not to be offered
