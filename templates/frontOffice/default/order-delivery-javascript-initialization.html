@@ -1,0 +1,23 @@
+(function ($) {
+
+    var canadaPostId = '{$canada_post_id}',
+        $canadaPostContainer,
+        $canadaPost;
+
+    var checkCanadaPost = function checkCanadaPost() {
+        if ($canadaPost.prop("checked")) {
+            $canadaPostContainer.show();
+        } else {
+            $canadaPostContainer.hide();
+        }
+    };
+
+    $(document).ready(function () {
+        $canadaPostContainer = $('#canada-post-services');
+        $canadaPost = $('#delivery-method_' + canadaPostId);
+
+        $canadaPost.on('change', checkCanadaPost);
+    });
+
+})(jQuery);
+
