@@ -30,5 +30,5 @@ class CanadaPostConfigValue
     const INSURANCE = "insurance";
     const ORIGIN_POSTALCODE = "origin_postalcode";
     const DISALLOWED_SERVICES = "disallowed_services";
+    const TRACKING_URL = 'tracking_url';
 }
-

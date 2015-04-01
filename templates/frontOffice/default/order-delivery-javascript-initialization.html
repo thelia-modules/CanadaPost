@@ -1,3 +1,4 @@
+<script type="text/javascript">
 (function ($) {
 
     var canadaPostId = '{$canada_post_id}',
@@ -5,19 +6,26 @@
         $canadaPost;
 
     var checkCanadaPost = function checkCanadaPost() {
+        $canadaPost = $('#delivery-method_' + canadaPostId);
+        $canadaPostContainer = $('#canada-post-services');
+
         if ($canadaPost.prop("checked")) {
-            $canadaPostContainer.show();
+            $canadaPostContainer.removeClass('hidden');
         } else {
-            $canadaPostContainer.hide();
+            $canadaPostContainer.addClass('hidden');
         }
     };
 
     $(document).ready(function () {
-        $canadaPostContainer = $('#canada-post-services');
-        $canadaPost = $('#delivery-method_' + canadaPostId);
 
-        $canadaPost.on('change', checkCanadaPost);
+        $('#delivery-module-list-block')
+            .on('change', "input:radio", checkCanadaPost);
+        /*
+            .on('change', '#delivery-method_' + canadaPostId, checkCanadaPost)
+            .on('click', '#delivery-method_' + canadaPostId, checkCanadaPost);
+        */
+
     });
 
 })(jQuery);
-
+</script>

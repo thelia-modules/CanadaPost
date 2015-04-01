@@ -20,5 +20,6 @@ use CanadaPost\Model\Config\Base\CanadaPostConfigValue as BaseCanadaPostConfigVa
  */
 class CanadaPostConfigValue extends BaseCanadaPostConfigValue
 {
+
 }
 

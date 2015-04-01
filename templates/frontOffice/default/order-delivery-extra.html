@@ -1,0 +1,22 @@
+{ifloop rel="canada-post-rate"}
+<div id="canada-post-services" class="radio {if ! $is_module_selected}hidden{/if}">
+    <p>
+        {intl l="Please select the current Canada Post service you want to use." d="canadapost.fo.default"}
+    </p>
+{loop name="canada-post-rate" type="canada-post-rate" country={$country_code} postal_code={$country_code} weight={$weight}}
+    {$checked = false}
+    {if $service_selected}
+        {if $service_selected == {$CODE}}{$checked = false}{/if}
+    {else}
+        {if $LOOP_COUNT == 1}{$checked = true}{/if}
+    {/if}
+    <div>
+        <label>
+            <input type="radio" class="canada-post-service" name="canada-post-service" value="{$CODE}" />
+            <strong>{$NAME}</strong> / {format_money number={$PRICE} symbol={currency attr="symbol"}}
+            {if $TRANSIT_TIME}<small>{intl l="(estimated transit time: %days day(s))" d="canadapost.fo.default" days={$TRANSIT_TIME}}</small>{/if}
+        </label>
+    </div>
+{/loop}
+</div>
+{/ifloop}

@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
-  <loops>
-    <!-- sample definition
-        <loop name="MySuperLoop" class="CanadaPost\Loop\MySuperLoop" />
-        -->
-  </loops>
-  <forms>
-    <!--
-        <form name="MyFormName" class="CanadaPost\Form\MySuperForm" />
-        -->
-    <form name="canadapost.configuration" class="CanadaPost\Form\CanadaPostConfigForm"/>
-  </forms>
-  <commands>
-    <!--
-        <command class="CanadaPost\Command\MySuperCommand" />
-        -->
-  </commands>
-  <!--
+<config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <!-- sample definition -->
+        <loop name="canada-post-rate" class="CanadaPost\Loop\Rates"/>
+    </loops>
+
+    <forms>
+        <!--
+            <form name="MyFormName" class="CanadaPost\Form\MySuperForm" />
+            -->
+        <form name="canadapost.configuration" class="CanadaPost\Form\CanadaPostConfigForm"/>
+    </forms>
+
+    <commands>
+        <!--
+            <command class="CanadaPost\Command\MySuperCommand" />
+            -->
+    </commands>
+
     <services>
 
+        <service id="canada.post.order.actions" class="CanadaPost\Action\CanadaPostAction" scope="request">
+            <argument type="service" id="request"/>
+            <argument type="service" id="module.canadapost"/>
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="canada.post.sendmail.actions" class="CanadaPost\Action\SendMailAction" scope="request">
+            <argument type="service" id="mailer"/>
+            <tag name="kernel.event_subscriber" />
+        </service>
+
     </services>
-    -->
-  <!--
+
     <hooks>
-        <hook id="canadapost.hook" class="CanadaPost\Hook\MySuperHook" scope="request">
-            <tag name="hook.event_listener" event="main.body.bottom" type="front|back|pdf|email" method="onMainBodyBottom" />
+        <hook id="canadapost.hook" class="CanadaPost\Hook\CanadaPostHook" scope="request">
+            <tag name="hook.event_listener" event="order-delivery.extra" type="front" />
+            <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front" />
         </hook>
     </hooks>
-    -->
-  <!--
-    <exports>
 
-    </exports>
-    -->
-  <!--
-    <imports>
+    <!--
+      <exports>
 
-    </imports>
-    -->
+      </exports>
+      -->
+    <!--
+      <imports>
+
+      </imports>
+      -->
 </config>

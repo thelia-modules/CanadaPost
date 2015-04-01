@@ -43,3 +43,8 @@ config:
     required: false
     label: Disallowed Shipping Methods
     help: The Canada Post services not to be offered
+  tracking_url:
+    type: text
+    required: false
+    label: Tracking URL
+    help: The URL to access to a parcel’s delivery status

@@ -2,6 +2,37 @@
 <database defaultIdMethod="native" name="thelia"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="../../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+    <table name="canada_post_order" namespace="CanadaPost\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+
+        <column name="address_id" required="false" type="INTEGER" />
+        <column name="order_address_id" required="false" type="INTEGER" />
+        <column name="service" required="true" type="VARCHAR" />
+        <column name="options" required="false" type="VARCHAR" />
+
+        <foreign-key foreignTable="address" name="fk_canada_post_address_id" onDelete="SET NULL">
+            <reference foreign="id" local="address_id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="order_address" name="fk_canada_post_order_address_id" onDelete="SET NULL">
+            <reference foreign="id" local="order_address_id" />
+        </foreign-key>
+
+    </table>
+
+    <table name="canada_post_service" namespace="CanadaPost\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+
+        <column name="code" required="false" type="INTEGER" />
+        <column name="title" size="255" type="VARCHAR" />
+        <column name="chapo" type="LONGVARCHAR" />
+
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="title, chapo" />
+        </behavior>
+    </table>
+
     <!--
     See propel documentation on http://propelorm.org for all information about schema file
 

@@ -57,6 +57,7 @@ class CanadaPostConfigForm extends BaseForm
         $this->addInsuranceField($translationKeys, $fieldsIdKeys);
         $this->addOriginPostalcodeField($translationKeys, $fieldsIdKeys);
         $this->addDisallowedServicesField($translationKeys, $fieldsIdKeys);
+        $this->addTrackingUrlField($translationKeys, $fieldsIdKeys);
     }
 
     protected function addEnabledField(array $translationKeys, array $fieldsIdKeys)
@@ -265,6 +266,23 @@ class CanadaPostConfigForm extends BaseForm
         ;
     }
 
+    protected function addTrackingUrlField(array $translationKeys, array $fieldsIdKeys)
+    {
+        $this->formBuilder
+            ->add("tracking_url", "text", array(
+                "label" => $this->readKey("tracking_url", $translationKeys),
+                "label_attr" => [
+                    "for" => $this->readKey("tracking_url", $fieldsIdKeys),
+                    "help" => $this->readKey("help.tracking_url", $translationKeys)
+                ],
+                "required" => false,
+                "constraints" => array(
+                ),
+                "data" => CanadaPost::getConfigValue(CanadaPostConfigValue::TRACKING_URL),
+            ))
+        ;
+    }
+
     public function getName()
     {
         return static::FORM_NAME;
@@ -299,6 +317,7 @@ class CanadaPostConfigForm extends BaseForm
             "insurance" => "insurance",
             "origin_postalcode" => "origin_postalcode",
             "disallowed_services" => "disallowed_services",
+            "tracking_url" => "tracking_url",
         );
     }
 }
