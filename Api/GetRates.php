@@ -33,7 +33,8 @@ class GetRates extends BaseApi
                 'method' => 'post',
                 'curlHttpHeader' => [
                     'Content-Type: application/vnd.cpc.ship.rate-v3+xml',
-                    'Accept: application/vnd.cpc.ship.rate-v3+xml'
+                    'Accept: application/vnd.cpc.ship.rate-v3+xml',
+                    'Accept-language: %locale%'
                 ]
             ]
         );

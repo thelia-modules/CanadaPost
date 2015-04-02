@@ -2,31 +2,67 @@
 <routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
   <!--
 
-    if a /admin/module/canadapost/ route is provided, a "Configuration" button will be displayed
-    for the module in the module list. Clicking this button will invoke this route.
+      if a /admin/module/canadapost/ route is provided, a "Configuration" button will be displayed
+      for the module in the module list. Clicking this button will invoke this route.
 
-    <route id="my_route_id" path="/admin/module/canadapost">
-        <default key="_controller">CanadaPost\Full\Class\Name\Of\YourConfigurationController::methodName</default>
-    </route>
+      <route id="my_route_id" path="/admin/module/canadapost">
+          <default key="_controller">CanadaPost\Full\Class\Name\Of\YourConfigurationController::methodName</default>
+      </route>
 
-    <route id="my_route_id" path="/admin/module/canadapost/route-name">
-        <default key="_controller">CanadaPost\Full\Class\Name\Of\YourAdminController::methodName</default>
-    </route>
+      <route id="my_route_id" path="/admin/module/canadapost/route-name">
+          <default key="_controller">CanadaPost\Full\Class\Name\Of\YourAdminController::methodName</default>
+      </route>
 
-    <route id="my_route_id" path="/my/route/name">
-        <default key="_controller">CanadaPost\Full\Class\Name\Of\YourOtherController::methodName</default>
-    </route>
+      <route id="my_route_id" path="/my/route/name">
+          <default key="_controller">CanadaPost\Full\Class\Name\Of\YourOtherController::methodName</default>
+      </route>
 
-    ...add as many routes as required.
+      ...add as many routes as required.
 
-    <route>
-    ...
-    </route>
-    -->
+      <route>
+      ...
+      </route>
+      -->
+  <route id="canadapost.canada_post_order.list" path="/admin/module/CanadaPost/canada_post_order" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostOrder:default</default>
+  </route>
+  <route id="canadapost.canada_post_order.create" path="/admin/module/CanadaPost/canada_post_order" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostOrder:create</default>
+  </route>
+  <route id="canadapost.canada_post_order.view" path="/admin/module/CanadaPost/canada_post_order/edit" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostOrder:update</default>
+  </route>
+  <route id="canadapost.canada_post_order.edit" path="/admin/module/CanadaPost/canada_post_order/edit" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostOrder:processUpdate</default>
+  </route>
+  <route id="canadapost.canada_post_order.delete" path="/admin/module/CanadaPost/canada_post_order/delete" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostOrder:delete</default>
+  </route>
+  <route id="canadapost.canada_post_service.import" path="/admin/module/CanadaPost/import_services" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostService:import</default>
+  </route>
+  <route id="canadapost.canada_post_service.list" path="/admin/module/CanadaPost/canada_post_service" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostService:default</default>
+  </route>
+  <route id="canadapost.canada_post_service.create" path="/admin/module/CanadaPost/canada_post_service" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostService:create</default>
+  </route>
+  <route id="canadapost.canada_post_service.view" path="/admin/module/CanadaPost/canada_post_service/edit" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostService:update</default>
+  </route>
+  <route id="canadapost.canada_post_service.edit" path="/admin/module/CanadaPost/canada_post_service/edit" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostService:processUpdate</default>
+  </route>
+  <route id="canadapost.canada_post_service.delete" path="/admin/module/CanadaPost/canada_post_service/delete" methods="post">
+    <default key="_controller">CanadaPost:CanadaPostService:delete</default>
+  </route>
   <route id="canadapost.configuration.default" path="/admin/module/CanadaPost" methods="get">
     <default key="_controller">CanadaPost:CanadaPostConfig:default</default>
   </route>
   <route id="canadapost.configuration.save" path="/admin/module/CanadaPost" methods="post">
     <default key="_controller">CanadaPost:CanadaPostConfig:save</default>
+  </route>
+  <route id="canadapost.canada_post_service.toggle_visibility" path="/admin/module/CanadaPost/canada_post_service/toggleVisibility" methods="get">
+    <default key="_controller">CanadaPost:CanadaPostService:setToggleVisibility</default>
   </route>
 </routes>

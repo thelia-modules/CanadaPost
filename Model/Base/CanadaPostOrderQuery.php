@@ -26,18 +26,22 @@ use Thelia\Model\OrderAddress;
  * @method     ChildCanadaPostOrderQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCanadaPostOrderQuery orderByAddressId($order = Criteria::ASC) Order by the address_id column
  * @method     ChildCanadaPostOrderQuery orderByOrderAddressId($order = Criteria::ASC) Order by the order_address_id column
- * @method     ChildCanadaPostOrderQuery orderByService($order = Criteria::ASC) Order by the service column
+ * @method     ChildCanadaPostOrderQuery orderByServiceId($order = Criteria::ASC) Order by the service_id column
  * @method     ChildCanadaPostOrderQuery orderByOptions($order = Criteria::ASC) Order by the options column
  *
  * @method     ChildCanadaPostOrderQuery groupById() Group by the id column
  * @method     ChildCanadaPostOrderQuery groupByAddressId() Group by the address_id column
  * @method     ChildCanadaPostOrderQuery groupByOrderAddressId() Group by the order_address_id column
- * @method     ChildCanadaPostOrderQuery groupByService() Group by the service column
+ * @method     ChildCanadaPostOrderQuery groupByServiceId() Group by the service_id column
  * @method     ChildCanadaPostOrderQuery groupByOptions() Group by the options column
  *
  * @method     ChildCanadaPostOrderQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildCanadaPostOrderQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildCanadaPostOrderQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildCanadaPostOrderQuery leftJoinCanadaPostService($relationAlias = null) Adds a LEFT JOIN clause to the query using the CanadaPostService relation
+ * @method     ChildCanadaPostOrderQuery rightJoinCanadaPostService($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CanadaPostService relation
+ * @method     ChildCanadaPostOrderQuery innerJoinCanadaPostService($relationAlias = null) Adds a INNER JOIN clause to the query using the CanadaPostService relation
  *
  * @method     ChildCanadaPostOrderQuery leftJoinAddress($relationAlias = null) Adds a LEFT JOIN clause to the query using the Address relation
  * @method     ChildCanadaPostOrderQuery rightJoinAddress($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Address relation
@@ -53,13 +57,13 @@ use Thelia\Model\OrderAddress;
  * @method     ChildCanadaPostOrder findOneById(int $id) Return the first ChildCanadaPostOrder filtered by the id column
  * @method     ChildCanadaPostOrder findOneByAddressId(int $address_id) Return the first ChildCanadaPostOrder filtered by the address_id column
  * @method     ChildCanadaPostOrder findOneByOrderAddressId(int $order_address_id) Return the first ChildCanadaPostOrder filtered by the order_address_id column
- * @method     ChildCanadaPostOrder findOneByService(string $service) Return the first ChildCanadaPostOrder filtered by the service column
+ * @method     ChildCanadaPostOrder findOneByServiceId(int $service_id) Return the first ChildCanadaPostOrder filtered by the service_id column
  * @method     ChildCanadaPostOrder findOneByOptions(string $options) Return the first ChildCanadaPostOrder filtered by the options column
  *
  * @method     array findById(int $id) Return ChildCanadaPostOrder objects filtered by the id column
  * @method     array findByAddressId(int $address_id) Return ChildCanadaPostOrder objects filtered by the address_id column
  * @method     array findByOrderAddressId(int $order_address_id) Return ChildCanadaPostOrder objects filtered by the order_address_id column
- * @method     array findByService(string $service) Return ChildCanadaPostOrder objects filtered by the service column
+ * @method     array findByServiceId(int $service_id) Return ChildCanadaPostOrder objects filtered by the service_id column
  * @method     array findByOptions(string $options) Return ChildCanadaPostOrder objects filtered by the options column
  *
  */
@@ -149,7 +153,7 @@ abstract class CanadaPostOrderQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, ADDRESS_ID, ORDER_ADDRESS_ID, SERVICE, OPTIONS FROM canada_post_order WHERE ID = :p0';
+        $sql = 'SELECT ID, ADDRESS_ID, ORDER_ADDRESS_ID, SERVICE_ID, OPTIONS FROM canada_post_order WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -366,32 +370,46 @@ abstract class CanadaPostOrderQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the service column
+     * Filter the query on the service_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByService('fooValue');   // WHERE service = 'fooValue'
-     * $query->filterByService('%fooValue%'); // WHERE service LIKE '%fooValue%'
+     * $query->filterByServiceId(1234); // WHERE service_id = 1234
+     * $query->filterByServiceId(array(12, 34)); // WHERE service_id IN (12, 34)
+     * $query->filterByServiceId(array('min' => 12)); // WHERE service_id > 12
      * </code>
      *
-     * @param     string $service The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByCanadaPostService()
+     *
+     * @param     mixed $serviceId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildCanadaPostOrderQuery The current query, for fluid interface
      */
-    public function filterByService($service = null, $comparison = null)
+    public function filterByServiceId($serviceId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($service)) {
+        if (is_array($serviceId)) {
+            $useMinMax = false;
+            if (isset($serviceId['min'])) {
+                $this->addUsingAlias(CanadaPostOrderTableMap::SERVICE_ID, $serviceId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($serviceId['max'])) {
+                $this->addUsingAlias(CanadaPostOrderTableMap::SERVICE_ID, $serviceId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $service)) {
-                $service = str_replace('*', '%', $service);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(CanadaPostOrderTableMap::SERVICE, $service, $comparison);
+        return $this->addUsingAlias(CanadaPostOrderTableMap::SERVICE_ID, $serviceId, $comparison);
     }
 
     /**
@@ -421,6 +439,81 @@ abstract class CanadaPostOrderQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CanadaPostOrderTableMap::OPTIONS, $options, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \CanadaPost\Model\CanadaPostService object
+     *
+     * @param \CanadaPost\Model\CanadaPostService|ObjectCollection $canadaPostService The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCanadaPostOrderQuery The current query, for fluid interface
+     */
+    public function filterByCanadaPostService($canadaPostService, $comparison = null)
+    {
+        if ($canadaPostService instanceof \CanadaPost\Model\CanadaPostService) {
+            return $this
+                ->addUsingAlias(CanadaPostOrderTableMap::SERVICE_ID, $canadaPostService->getId(), $comparison);
+        } elseif ($canadaPostService instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(CanadaPostOrderTableMap::SERVICE_ID, $canadaPostService->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByCanadaPostService() only accepts arguments of type \CanadaPost\Model\CanadaPostService or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CanadaPostService relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildCanadaPostOrderQuery The current query, for fluid interface
+     */
+    public function joinCanadaPostService($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CanadaPostService');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CanadaPostService');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CanadaPostService relation CanadaPostService object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \CanadaPost\Model\CanadaPostServiceQuery A secondary query class using the current class as primary query
+     */
+    public function useCanadaPostServiceQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinCanadaPostService($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CanadaPostService', '\CanadaPost\Model\CanadaPostServiceQuery');
     }
 
     /**

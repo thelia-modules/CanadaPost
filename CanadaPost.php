@@ -7,7 +7,9 @@
 namespace CanadaPost;
 
 use CanadaPost\Api\GetRates;
+use CanadaPost\Model\CanadaPostServiceQuery;
 use CanadaPost\Model\Config\CanadaPostConfigValue;
+use CanadaPost\Model\Map\CanadaPostServiceTableMap;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Translation\Translator;
@@ -104,7 +106,7 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
             CanadaPostConfigValue::INSURANCE => 0,
             CanadaPostConfigValue::ORIGIN_POSTALCODE => '',
             CanadaPostConfigValue::DISALLOWED_SERVICES => '',
-            CanadaPostConfigValue::TRACKING_ULR => 'http://www.canadapost.ca/cpotools/apps/track/personal/findByTrackNumber?trackingNumber=%tracking-number%&LOCALE=%locale%',
+            CanadaPostConfigValue::TRACKING_URL => 'http://www.canadapost.ca/cpotools/apps/track/personal/findByTrackNumber?trackingNumber=%tracking-number%&LOCALE=%locale%',
         ];
 
         foreach ($defaults as $configName => $configValue) {
@@ -273,6 +275,20 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
 
         $priceQuotes = $response->getPriceQuotes();
 
+        // filter services
+        $availableServices = CanadaPostServiceQuery::create()
+            ->filterByVisible(1)
+            ->select(CanadaPostServiceTableMap::CODE)
+            ->find()
+            ->toArray();
+
+        for ($i = 0 ; $i < count($priceQuotes) ; $i++) {
+            if (!in_array($priceQuotes[$i]['code'], $availableServices)) {
+                unset($priceQuotes[$i]);
+            }
+        }
+
+        // convert in the right currency
         if ("CAD" !== $currency->getCode()) {
             $canadianDollar = self::getCanadianDollarCurrency();
             $conversionRate = $currency->getRate() / $canadianDollar->getRate();

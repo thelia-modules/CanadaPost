@@ -45,6 +45,7 @@ class CanadaPostConfigController extends BaseAdminController
             CanadaPost::setConfigValue(CanadaPostConfigValue::INSURANCE, is_bool($data["insurance"]) ? (int) ($data["insurance"]) : $data["insurance"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::ORIGIN_POSTALCODE, is_bool($data["origin_postalcode"]) ? (int) ($data["origin_postalcode"]) : $data["origin_postalcode"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::DISALLOWED_SERVICES, is_bool($data["disallowed_services"]) ? (int) ($data["disallowed_services"]) : $data["disallowed_services"]);
+            CanadaPost::setConfigValue(CanadaPostConfigValue::TRACKING_URL, is_bool($data["tracking_url"]) ? (int) ($data["tracking_url"]) : $data["tracking_url"]);
         } catch (FormValidationException $ex) {
             // Invalid data entered
             $errorMessage = $this->createStandardFormValidationErrorMessage($ex);

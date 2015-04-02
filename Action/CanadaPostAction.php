@@ -14,6 +14,7 @@
 namespace CanadaPost\Action;
 
 use CanadaPost\CanadaPost;
+use CanadaPost\Model\Base\CanadaPostServiceQuery;
 use CanadaPost\Model\CanadaPostOrder;
 use CanadaPost\Model\CanadaPostOrderQuery;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -86,6 +87,8 @@ class CanadaPostAction implements EventSubscriberInterface
 
             $serviceCode = $request->get('canada-post-service');
             $serviceOptions = $request->get('canada-post-options');
+            $service = CanadaPostServiceQuery::create()->findOneByCode($serviceCode);
+            $serviceId = $service->getId();
 
             $request->getSession()->set('canada-post-service', $serviceCode);
             $request->getSession()->set('canada-post-options', $serviceOptions);
@@ -101,7 +104,7 @@ class CanadaPostAction implements EventSubscriberInterface
             }
 
             $canadaPostOrder->setOptions($serviceOptions);
-            $canadaPostOrder->setService($serviceCode);
+            $canadaPostOrder->setServiceId($serviceId);
             $canadaPostOrder->save();
 
             $address = AddressQuery::create()->findPk($event->getDeliveryAddress());
@@ -127,6 +130,8 @@ class CanadaPostAction implements EventSubscriberInterface
 
             $serviceCode = $request->getSession()->get('canada-post-service');
             $serviceOptions = $request->getSession()->get('canada-post-options');
+            $service = CanadaPostServiceQuery::create()->findOneByCode($serviceCode);
+            $serviceId = $service->getId();
 
             $canadaPostOrder = CanadaPostOrderQuery::create()
                 ->filterByAddressId($order->getId())
@@ -139,7 +144,7 @@ class CanadaPostAction implements EventSubscriberInterface
             }
 
             $canadaPostOrder->setOptions($serviceOptions);
-            $canadaPostOrder->setService($serviceCode);
+            $canadaPostOrder->setServiceId($serviceId);
             $canadaPostOrder->save();
         }
     }

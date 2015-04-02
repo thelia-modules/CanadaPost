@@ -86,9 +86,9 @@ class CanadaPostOrderTableMap extends TableMap
     const ORDER_ADDRESS_ID = 'canada_post_order.ORDER_ADDRESS_ID';
 
     /**
-     * the column name for the SERVICE field
+     * the column name for the SERVICE_ID field
      */
-    const SERVICE = 'canada_post_order.SERVICE';
+    const SERVICE_ID = 'canada_post_order.SERVICE_ID';
 
     /**
      * the column name for the OPTIONS field
@@ -107,11 +107,11 @@ class CanadaPostOrderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'AddressId', 'OrderAddressId', 'Service', 'Options', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'addressId', 'orderAddressId', 'service', 'options', ),
-        self::TYPE_COLNAME       => array(CanadaPostOrderTableMap::ID, CanadaPostOrderTableMap::ADDRESS_ID, CanadaPostOrderTableMap::ORDER_ADDRESS_ID, CanadaPostOrderTableMap::SERVICE, CanadaPostOrderTableMap::OPTIONS, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ADDRESS_ID', 'ORDER_ADDRESS_ID', 'SERVICE', 'OPTIONS', ),
-        self::TYPE_FIELDNAME     => array('id', 'address_id', 'order_address_id', 'service', 'options', ),
+        self::TYPE_PHPNAME       => array('Id', 'AddressId', 'OrderAddressId', 'ServiceId', 'Options', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'addressId', 'orderAddressId', 'serviceId', 'options', ),
+        self::TYPE_COLNAME       => array(CanadaPostOrderTableMap::ID, CanadaPostOrderTableMap::ADDRESS_ID, CanadaPostOrderTableMap::ORDER_ADDRESS_ID, CanadaPostOrderTableMap::SERVICE_ID, CanadaPostOrderTableMap::OPTIONS, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ADDRESS_ID', 'ORDER_ADDRESS_ID', 'SERVICE_ID', 'OPTIONS', ),
+        self::TYPE_FIELDNAME     => array('id', 'address_id', 'order_address_id', 'service_id', 'options', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -122,11 +122,11 @@ class CanadaPostOrderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'AddressId' => 1, 'OrderAddressId' => 2, 'Service' => 3, 'Options' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'addressId' => 1, 'orderAddressId' => 2, 'service' => 3, 'options' => 4, ),
-        self::TYPE_COLNAME       => array(CanadaPostOrderTableMap::ID => 0, CanadaPostOrderTableMap::ADDRESS_ID => 1, CanadaPostOrderTableMap::ORDER_ADDRESS_ID => 2, CanadaPostOrderTableMap::SERVICE => 3, CanadaPostOrderTableMap::OPTIONS => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ADDRESS_ID' => 1, 'ORDER_ADDRESS_ID' => 2, 'SERVICE' => 3, 'OPTIONS' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'address_id' => 1, 'order_address_id' => 2, 'service' => 3, 'options' => 4, ),
+        self::TYPE_PHPNAME       => array('Id' => 0, 'AddressId' => 1, 'OrderAddressId' => 2, 'ServiceId' => 3, 'Options' => 4, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'addressId' => 1, 'orderAddressId' => 2, 'serviceId' => 3, 'options' => 4, ),
+        self::TYPE_COLNAME       => array(CanadaPostOrderTableMap::ID => 0, CanadaPostOrderTableMap::ADDRESS_ID => 1, CanadaPostOrderTableMap::ORDER_ADDRESS_ID => 2, CanadaPostOrderTableMap::SERVICE_ID => 3, CanadaPostOrderTableMap::OPTIONS => 4, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ADDRESS_ID' => 1, 'ORDER_ADDRESS_ID' => 2, 'SERVICE_ID' => 3, 'OPTIONS' => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'address_id' => 1, 'order_address_id' => 2, 'service_id' => 3, 'options' => 4, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -149,7 +149,7 @@ class CanadaPostOrderTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('ADDRESS_ID', 'AddressId', 'INTEGER', 'address', 'ID', false, null, null);
         $this->addForeignKey('ORDER_ADDRESS_ID', 'OrderAddressId', 'INTEGER', 'order_address', 'ID', false, null, null);
-        $this->addColumn('SERVICE', 'Service', 'VARCHAR', true, 255, null);
+        $this->addForeignKey('SERVICE_ID', 'ServiceId', 'INTEGER', 'canada_post_service', 'ID', false, null, null);
         $this->addColumn('OPTIONS', 'Options', 'VARCHAR', false, 255, null);
     } // initialize()
 
@@ -158,6 +158,7 @@ class CanadaPostOrderTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('CanadaPostService', '\\CanadaPost\\Model\\CanadaPostService', RelationMap::MANY_TO_ONE, array('service_id' => 'id', ), 'SET NULL', null);
         $this->addRelation('Address', '\\Thelia\\Model\\Address', RelationMap::MANY_TO_ONE, array('address_id' => 'id', ), 'SET NULL', null);
         $this->addRelation('OrderAddress', '\\Thelia\\Model\\OrderAddress', RelationMap::MANY_TO_ONE, array('order_address_id' => 'id', ), 'SET NULL', null);
     } // buildRelations()
@@ -303,13 +304,13 @@ class CanadaPostOrderTableMap extends TableMap
             $criteria->addSelectColumn(CanadaPostOrderTableMap::ID);
             $criteria->addSelectColumn(CanadaPostOrderTableMap::ADDRESS_ID);
             $criteria->addSelectColumn(CanadaPostOrderTableMap::ORDER_ADDRESS_ID);
-            $criteria->addSelectColumn(CanadaPostOrderTableMap::SERVICE);
+            $criteria->addSelectColumn(CanadaPostOrderTableMap::SERVICE_ID);
             $criteria->addSelectColumn(CanadaPostOrderTableMap::OPTIONS);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.ADDRESS_ID');
             $criteria->addSelectColumn($alias . '.ORDER_ADDRESS_ID');
-            $criteria->addSelectColumn($alias . '.SERVICE');
+            $criteria->addSelectColumn($alias . '.SERVICE_ID');
             $criteria->addSelectColumn($alias . '.OPTIONS');
         }
     }

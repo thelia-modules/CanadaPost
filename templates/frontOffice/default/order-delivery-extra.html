@@ -13,7 +13,11 @@
     <div>
         <label>
             <input type="radio" class="canada-post-service" name="canada-post-service" value="{$CODE}" />
-            <strong>{$NAME}</strong> / {format_money number={$PRICE} symbol={currency attr="symbol"}}
+            {$serviceName=$NAME}
+            {loop name="canada-post-service" type="canada-post-service" code={$CODE} limit="1"}
+                {$serviceName=$TITLE}
+            {/loop}
+            <strong>{$serviceName}</strong> / {format_money number={$PRICE} symbol={currency attr="symbol"}}
             {if $TRANSIT_TIME}<small>{intl l="(estimated transit time: %days day(s))" d="canadapost.fo.default" days={$TRANSIT_TIME}}</small>{/if}
         </label>
     </div>

@@ -12,13 +12,12 @@
 
 namespace CanadaPost\Action;
 
-use Propel\Runtime\ActiveQuery\Criteria;
+use CanadaPost\CanadaPost;
+use CanadaPost\Model\Config\CanadaPostConfigValue;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\Log\Tlog;
 use Thelia\Mailer\MailerFactory;
-use Thelia\Model\OrderProductQuery;
 
 /**
  * Class SendMailAction
@@ -39,9 +38,19 @@ class SendMailAction implements EventSubscriberInterface
     {
         $order = $event->getOrder();
 
-        if ($order->isSent()) {
+        if ($order->isSent() && $order->getDeliveryModuleId() == CanadaPost::getModuleId()) {
 
             $customer = $order->getCustomer();
+
+            $trackingRef = $order->getDeliveryRef();
+            $trackingUrl = CanadaPost::getConfigValue(CanadaPostConfigValue::TRACKING_URL);
+
+            if (!empty($trackingUrl) && !empty($trackingRef)) {
+                $trackingUrl = str_replace('%tracking-number%', $trackingRef, $trackingUrl);
+                $trackingUrl = str_replace('%locale%', $customer->getCustomerLang()->getLocale(), $trackingUrl);
+            } else {
+                $trackingUrl = null;
+            }
 
             $this->mailer->sendEmailToCustomer(
                 'mail_canada_post',
@@ -51,10 +60,10 @@ class SendMailAction implements EventSubscriberInterface
                     'order_id' => $order->getId(),
                     'order_ref' => $order->getRef(),
                     'order_date' => $order->getCreatedAt(),
-                    'update_date' => $order->getUpdatedAt()
+                    'update_date' => $order->getUpdatedAt(),
+                    'tracking_url' => $trackingUrl
                 ]
             );
-
         }
     }
 

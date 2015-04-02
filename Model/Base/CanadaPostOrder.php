@@ -5,6 +5,8 @@ namespace CanadaPost\Model\Base;
 use \Exception;
 use \PDO;
 use CanadaPost\Model\CanadaPostOrderQuery as ChildCanadaPostOrderQuery;
+use CanadaPost\Model\CanadaPostService as ChildCanadaPostService;
+use CanadaPost\Model\CanadaPostServiceQuery as ChildCanadaPostServiceQuery;
 use CanadaPost\Model\Map\CanadaPostOrderTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -74,16 +76,21 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
     protected $order_address_id;
 
     /**
-     * The value for the service field.
-     * @var        string
+     * The value for the service_id field.
+     * @var        int
      */
-    protected $service;
+    protected $service_id;
 
     /**
      * The value for the options field.
      * @var        string
      */
     protected $options;
+
+    /**
+     * @var        CanadaPostService
+     */
+    protected $aCanadaPostService;
 
     /**
      * @var        Address
@@ -395,14 +402,14 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
     }
 
     /**
-     * Get the [service] column value.
+     * Get the [service_id] column value.
      *
-     * @return   string
+     * @return   int
      */
-    public function getService()
+    public function getServiceId()
     {
 
-        return $this->service;
+        return $this->service_id;
     }
 
     /**
@@ -488,25 +495,29 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
     } // setOrderAddressId()
 
     /**
-     * Set the value of [service] column.
+     * Set the value of [service_id] column.
      *
-     * @param      string $v new value
+     * @param      int $v new value
      * @return   \CanadaPost\Model\CanadaPostOrder The current object (for fluent API support)
      */
-    public function setService($v)
+    public function setServiceId($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->service !== $v) {
-            $this->service = $v;
-            $this->modifiedColumns[CanadaPostOrderTableMap::SERVICE] = true;
+        if ($this->service_id !== $v) {
+            $this->service_id = $v;
+            $this->modifiedColumns[CanadaPostOrderTableMap::SERVICE_ID] = true;
+        }
+
+        if ($this->aCanadaPostService !== null && $this->aCanadaPostService->getId() !== $v) {
+            $this->aCanadaPostService = null;
         }
 
 
         return $this;
-    } // setService()
+    } // setServiceId()
 
     /**
      * Set the value of [options] column.
@@ -575,8 +586,8 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CanadaPostOrderTableMap::translateFieldName('OrderAddressId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->order_address_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CanadaPostOrderTableMap::translateFieldName('Service', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->service = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CanadaPostOrderTableMap::translateFieldName('ServiceId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->service_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CanadaPostOrderTableMap::translateFieldName('Options', TableMap::TYPE_PHPNAME, $indexType)];
             $this->options = (null !== $col) ? (string) $col : null;
@@ -615,6 +626,9 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         }
         if ($this->aOrderAddress !== null && $this->order_address_id !== $this->aOrderAddress->getId()) {
             $this->aOrderAddress = null;
+        }
+        if ($this->aCanadaPostService !== null && $this->service_id !== $this->aCanadaPostService->getId()) {
+            $this->aCanadaPostService = null;
         }
     } // ensureConsistency
 
@@ -655,6 +669,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCanadaPostService = null;
             $this->aAddress = null;
             $this->aOrderAddress = null;
         } // if (deep)
@@ -773,6 +788,13 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aCanadaPostService !== null) {
+                if ($this->aCanadaPostService->isModified() || $this->aCanadaPostService->isNew()) {
+                    $affectedRows += $this->aCanadaPostService->save($con);
+                }
+                $this->setCanadaPostService($this->aCanadaPostService);
+            }
+
             if ($this->aAddress !== null) {
                 if ($this->aAddress->isModified() || $this->aAddress->isNew()) {
                     $affectedRows += $this->aAddress->save($con);
@@ -833,8 +855,8 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         if ($this->isColumnModified(CanadaPostOrderTableMap::ORDER_ADDRESS_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ORDER_ADDRESS_ID';
         }
-        if ($this->isColumnModified(CanadaPostOrderTableMap::SERVICE)) {
-            $modifiedColumns[':p' . $index++]  = 'SERVICE';
+        if ($this->isColumnModified(CanadaPostOrderTableMap::SERVICE_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'SERVICE_ID';
         }
         if ($this->isColumnModified(CanadaPostOrderTableMap::OPTIONS)) {
             $modifiedColumns[':p' . $index++]  = 'OPTIONS';
@@ -859,8 +881,8 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
                     case 'ORDER_ADDRESS_ID':
                         $stmt->bindValue($identifier, $this->order_address_id, PDO::PARAM_INT);
                         break;
-                    case 'SERVICE':
-                        $stmt->bindValue($identifier, $this->service, PDO::PARAM_STR);
+                    case 'SERVICE_ID':
+                        $stmt->bindValue($identifier, $this->service_id, PDO::PARAM_INT);
                         break;
                     case 'OPTIONS':
                         $stmt->bindValue($identifier, $this->options, PDO::PARAM_STR);
@@ -937,7 +959,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
                 return $this->getOrderAddressId();
                 break;
             case 3:
-                return $this->getService();
+                return $this->getServiceId();
                 break;
             case 4:
                 return $this->getOptions();
@@ -974,7 +996,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getAddressId(),
             $keys[2] => $this->getOrderAddressId(),
-            $keys[3] => $this->getService(),
+            $keys[3] => $this->getServiceId(),
             $keys[4] => $this->getOptions(),
         );
         $virtualColumns = $this->virtualColumns;
@@ -983,6 +1005,9 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aCanadaPostService) {
+                $result['CanadaPostService'] = $this->aCanadaPostService->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aAddress) {
                 $result['Address'] = $this->aAddress->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1033,7 +1058,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
                 $this->setOrderAddressId($value);
                 break;
             case 3:
-                $this->setService($value);
+                $this->setServiceId($value);
                 break;
             case 4:
                 $this->setOptions($value);
@@ -1065,7 +1090,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setAddressId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setOrderAddressId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setService($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setServiceId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setOptions($arr[$keys[4]]);
     }
 
@@ -1081,7 +1106,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         if ($this->isColumnModified(CanadaPostOrderTableMap::ID)) $criteria->add(CanadaPostOrderTableMap::ID, $this->id);
         if ($this->isColumnModified(CanadaPostOrderTableMap::ADDRESS_ID)) $criteria->add(CanadaPostOrderTableMap::ADDRESS_ID, $this->address_id);
         if ($this->isColumnModified(CanadaPostOrderTableMap::ORDER_ADDRESS_ID)) $criteria->add(CanadaPostOrderTableMap::ORDER_ADDRESS_ID, $this->order_address_id);
-        if ($this->isColumnModified(CanadaPostOrderTableMap::SERVICE)) $criteria->add(CanadaPostOrderTableMap::SERVICE, $this->service);
+        if ($this->isColumnModified(CanadaPostOrderTableMap::SERVICE_ID)) $criteria->add(CanadaPostOrderTableMap::SERVICE_ID, $this->service_id);
         if ($this->isColumnModified(CanadaPostOrderTableMap::OPTIONS)) $criteria->add(CanadaPostOrderTableMap::OPTIONS, $this->options);
 
         return $criteria;
@@ -1148,7 +1173,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
     {
         $copyObj->setAddressId($this->getAddressId());
         $copyObj->setOrderAddressId($this->getOrderAddressId());
-        $copyObj->setService($this->getService());
+        $copyObj->setServiceId($this->getServiceId());
         $copyObj->setOptions($this->getOptions());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1176,6 +1201,57 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+    /**
+     * Declares an association between this object and a ChildCanadaPostService object.
+     *
+     * @param                  ChildCanadaPostService $v
+     * @return                 \CanadaPost\Model\CanadaPostOrder The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCanadaPostService(ChildCanadaPostService $v = null)
+    {
+        if ($v === null) {
+            $this->setServiceId(NULL);
+        } else {
+            $this->setServiceId($v->getId());
+        }
+
+        $this->aCanadaPostService = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCanadaPostService object, it will not be re-added.
+        if ($v !== null) {
+            $v->addCanadaPostOrder($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCanadaPostService object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCanadaPostService The associated ChildCanadaPostService object.
+     * @throws PropelException
+     */
+    public function getCanadaPostService(ConnectionInterface $con = null)
+    {
+        if ($this->aCanadaPostService === null && ($this->service_id !== null)) {
+            $this->aCanadaPostService = ChildCanadaPostServiceQuery::create()->findPk($this->service_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCanadaPostService->addCanadaPostOrders($this);
+             */
+        }
+
+        return $this->aCanadaPostService;
     }
 
     /**
@@ -1288,7 +1364,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         $this->id = null;
         $this->address_id = null;
         $this->order_address_id = null;
-        $this->service = null;
+        $this->service_id = null;
         $this->options = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
@@ -1311,6 +1387,7 @@ abstract class CanadaPostOrder implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aCanadaPostService = null;
         $this->aAddress = null;
         $this->aOrderAddress = null;
     }

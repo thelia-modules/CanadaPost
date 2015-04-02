@@ -57,7 +57,7 @@ abstract class BaseApi
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, $this->options['curlReturnTransfer']);
         curl_setopt($curl, CURLOPT_HTTPAUTH, $this->options['curlOptHttpAuth']);
         curl_setopt($curl, CURLOPT_USERPWD, $this->options['username'] . ':' . $this->options['password']);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->options['curlHttpHeader']);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->getHttpHeader());
 
         $curlResponse = curl_exec($curl); // Execute REST Request
 
@@ -96,6 +96,21 @@ abstract class BaseApi
         return $response;
     }
 
+    public function setLocale($locale) {
+        $this->options['locale'] = $locale;
+    }
+
+    protected function getHttpHeader()
+    {
+        $headers = [];
+
+        foreach ($this->options['curlHttpHeader'] as $header) {
+            $headers[] = str_replace('%locale%', $this->options['locale'], $header);
+        }
+
+        return $headers;
+    }
+
     /**
      * Get a new ResponseApi object
      *
@@ -128,16 +143,19 @@ abstract class BaseApi
 
         $resolver->setDefaults(
             [
+                'locale' => 'fr-CA',
+
                 'test' => (0 === intval(CanadaPost::getConfigValue('mode_production'))),
                 'username' => $username,
                 'password' => $password,
                 'customerNumber' => CanadaPost::getConfigValue('customer_number'),
+                'contractId' => CanadaPost::getConfigValue('contract_id'),
                 'origin' => CanadaPost::getConfigValue('origin_postalcode'),
 
                 'url' => null,
                 'url-test' => null,
                 'method' => 'get',
-                'curlHttpHeader' => null,
+                'curlHttpHeader' => [],
 
                 'curlSslVerifyPeer' => true,
                 'curlSslVerifyHost' => 2,
