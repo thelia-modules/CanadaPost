@@ -69,11 +69,13 @@ class ResponseApi
     }
 
     /**
-     * @param array $errors
+     *
+     * @param string $errorCode
+     * @param string $errorMessage
      */
-    public function addError($error)
+    public function addError($errorCode, $errorMessage)
     {
-        $this->errors[] = $error;
+        $this->errors[] = [$errorCode, $errorMessage];
 
         return $this;
     }

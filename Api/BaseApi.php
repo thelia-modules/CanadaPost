@@ -13,8 +13,10 @@
 
 namespace CanadaPost\Api;
 
+use CanadaPost\Api\Exception\ApiCallException;
 use CanadaPost\Api\Response\ResponseApi;
 use CanadaPost\CanadaPost;
+use CanadaPost\Model\Config\CanadaPostConfigValue;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -87,16 +89,24 @@ abstract class BaseApi
                 if ($xml->{'messages'}) {
                     $messages = $xml->{'messages'}->children('http://www.canadapost.ca/ws/messages');
                     foreach ($messages as $message) {
-                        $response->addError($message->code, $message->description);
+                        $response->addError(
+                            (string) $message->code,
+                            (string) $message->description
+                        );
                     }
                 }
             }
         }
 
+        if (0 < count($response->getErrors())) {
+            throw new ApiCallException($response);
+        }
+
         return $response;
     }
 
-    public function setLocale($locale) {
+    public function setLocale($locale)
+    {
         $this->options['locale'] = $locale;
     }
 
@@ -133,24 +143,29 @@ abstract class BaseApi
 
     private function configureOptions(OptionsResolverInterface $resolver)
     {
-        if (0 === intval(CanadaPost::getConfigValue('mode_production'))) {
-            $username = CanadaPost::getConfigValue('test_username');
-            $password = CanadaPost::getConfigValue('test_password');
+        if (0 === intval(CanadaPost::getConfigValue(CanadaPostConfigValue::MODE_PRODUCTION))) {
+            $username = CanadaPost::getConfigValue(CanadaPostConfigValue::TEST_USERNAME);
+            $password = CanadaPost::getConfigValue(CanadaPostConfigValue::TEST_PASSWORD);
         } else {
-            $username = CanadaPost::getConfigValue('username');
-            $password = CanadaPost::getConfigValue('password');
+            $username = CanadaPost::getConfigValue(CanadaPostConfigValue::USERNAME);
+            $password = CanadaPost::getConfigValue(CanadaPostConfigValue::PASSWORD);
         }
+
+        $quoteType = (0 === intval(CanadaPost::getConfigValue(CanadaPostConfigValue::QUOTE_TYPE_COMMERCIAL)))
+            ? 'counter'
+            : 'commercial';
 
         $resolver->setDefaults(
             [
                 'locale' => 'fr-CA',
 
-                'test' => (0 === intval(CanadaPost::getConfigValue('mode_production'))),
+                'test' => (0 === intval(CanadaPost::getConfigValue(CanadaPostConfigValue::MODE_PRODUCTION))),
                 'username' => $username,
                 'password' => $password,
-                'customerNumber' => CanadaPost::getConfigValue('customer_number'),
-                'contractId' => CanadaPost::getConfigValue('contract_id'),
-                'origin' => CanadaPost::getConfigValue('origin_postalcode'),
+                'customerNumber' => CanadaPost::getConfigValue(CanadaPostConfigValue::CUSTOMER_NUMBER),
+                'contractId' => CanadaPost::getConfigValue(CanadaPostConfigValue::CONTRACT_ID),
+                'origin' => CanadaPost::getConfigValue(CanadaPostConfigValue::ORIGIN_POSTALCODE),
+                'quoteType' => $quoteType,
 
                 'url' => null,
                 'url-test' => null,
@@ -170,6 +185,5 @@ abstract class BaseApi
 
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
     }
 }

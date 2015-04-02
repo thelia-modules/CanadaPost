@@ -61,7 +61,15 @@ class GetRates extends BaseApi
         $xmlRequest = [];
         $xmlRequest[] = '<?xml version="1.0" encoding="UTF-8"?>';
         $xmlRequest[] = '<mailing-scenario xmlns="http://www.canadapost.ca/ws/ship/rate-v3">';
-        $xmlRequest[] = sprintf('<customer-number>%s</customer-number>', $this->options['customerNumber']);
+        if ('counter' !== $this->options['quoteType']) {
+            if ($this->options['customerNumber']) {
+                $xmlRequest[] = sprintf('<customer-number>%s</customer-number>', $this->options['customerNumber']);
+            }
+            if ($this->options['contractId']) {
+                $xmlRequest[] = sprintf('<contract-id>%s</contract-id>', $this->options['contractId']);
+            }
+        }
+        $xmlRequest[] = sprintf('<quote-type>%s</quote-type>', $this->options['quoteType']);
         $xmlRequest[] = '<parcel-characteristics>';
         $xmlRequest[] = sprintf('<weight>%s</weight>', $weight);
         $xmlRequest[] = '</parcel-characteristics>';
