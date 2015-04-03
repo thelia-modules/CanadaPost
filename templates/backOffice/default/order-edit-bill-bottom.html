@@ -1,0 +1,18 @@
+{$service_exist=0}
+{ifloop rel="canada-post-order"}
+    {loop type="canada-post-order" name="canada-post-order" order_address_id={$order_address_id} limit="1"}
+        {ifloop rel="canada-post-service"}
+            {loop type="canada-post-service" name="canada-post-service" id={$SERVICE_ID} limit="1" visible="*" backend_context="on"}
+            <div class="alert alert-success">
+                {$service_exist=1}
+                {intl l="The Canada Post service selected by the customer for this order is <strong>%service</strong> (code : <strong>%code</strong>)." d="canadapost.bo.default" code={$CODE} service={$TITLE}}
+            </div>
+            {/loop}
+        {/ifloop}
+    {/loop}
+{/ifloop}
+{if {$service_exist} == 0}
+    <div class="alert alert-danger">
+        {intl l="Sorry the Canada Post service used for this order is not defined." d="canadapost.bo.default"}
+    </div>
+{/if}

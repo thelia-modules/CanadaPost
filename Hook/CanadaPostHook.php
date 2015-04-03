@@ -17,6 +17,7 @@ use CanadaPost\CanadaPost;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Hook\BaseHook;
+use Thelia\Model\OrderQuery;
 
 /**
  * Class CanadaPostHook
@@ -69,5 +70,29 @@ class CanadaPostHook extends BaseHook
                 ]
             )
         );
+    }
+
+
+    public function onOrderEditBillBottom(HookRenderEvent $event)
+    {
+        $orderId = $event->getArgument('order_id');
+        if (null !== $orderId) {
+            $order = OrderQuery::create()->findPk($orderId);
+
+            if (null !== $order && $order->getDeliveryModuleId() == CanadaPost::getModuleId()) {
+                $event->add(
+                    $this->render(
+                        'order-edit-bill-bottom.html',
+                        [
+                            'order_address_id' => $order->getDeliveryOrderAddressId()
+                        ]
+                    )
+                );
+            }
+        }
+
+
+
+
     }
 }
