@@ -13,7 +13,6 @@ use CanadaPost\Model\Map\CanadaPostServiceTableMap;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Translation\Translator;
-use Thelia\CurrencyConverter\Tests\CurrencyConverterTest;
 use Thelia\Install\Database;
 use Thelia\Log\Tlog;
 use Thelia\Model\Address;
@@ -282,7 +281,7 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
             ->find()
             ->toArray();
 
-        for ($i = 0 ; $i < count($priceQuotes) ; $i++) {
+        for ($i = 0; $i < count($priceQuotes); $i++) {
             if (!in_array($priceQuotes[$i]['code'], $availableServices)) {
                 unset($priceQuotes[$i]);
             }

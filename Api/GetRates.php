@@ -14,7 +14,6 @@
 namespace CanadaPost\Api;
 
 use CanadaPost\Api\Response\GetRatesResponseApi;
-use Thelia\Model\Country;
 
 /**
  * Class GetRates
@@ -95,7 +94,6 @@ class GetRates extends BaseApi
         $xmlRequest[] = '</mailing-scenario>';
 
         return implode("\n", $xmlRequest);
-
     }
 
     protected function getResponseApi()

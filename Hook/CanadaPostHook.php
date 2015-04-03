@@ -15,7 +15,6 @@ namespace CanadaPost\Hook;
 
 use CanadaPost\CanadaPost;
 use Thelia\Core\Event\Hook\HookRenderEvent;
-use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Model\OrderQuery;
 
@@ -90,9 +89,5 @@ class CanadaPostHook extends BaseHook
                 );
             }
         }
-
-
-
-
     }
 }

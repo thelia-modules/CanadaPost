@@ -69,7 +69,7 @@ abstract class BaseApi
             $response->addError(curl_errno($curl), curl_error($curl));
         }
 
-        $response->setStatusCode((int) curl_getinfo($curl, CURLINFO_HTTP_CODE));
+        $response->setStatusCode((int)curl_getinfo($curl, CURLINFO_HTTP_CODE));
 
         curl_close($curl);
 
@@ -90,8 +90,8 @@ abstract class BaseApi
                     $messages = $xml->{'messages'}->children('http://www.canadapost.ca/ws/messages');
                     foreach ($messages as $message) {
                         $response->addError(
-                            (string) $message->code,
-                            (string) $message->description
+                            (string)$message->code,
+                            (string)$message->description
                         );
                     }
                 }
@@ -158,7 +158,6 @@ abstract class BaseApi
         $resolver->setDefaults(
             [
                 'locale' => 'fr-CA',
-
                 'test' => (0 === intval(CanadaPost::getConfigValue(CanadaPostConfigValue::MODE_PRODUCTION))),
                 'username' => $username,
                 'password' => $password,
@@ -166,12 +165,10 @@ abstract class BaseApi
                 'contractId' => CanadaPost::getConfigValue(CanadaPostConfigValue::CONTRACT_ID),
                 'origin' => CanadaPost::getConfigValue(CanadaPostConfigValue::ORIGIN_POSTALCODE),
                 'quoteType' => $quoteType,
-
                 'url' => null,
                 'url-test' => null,
                 'method' => 'get',
                 'curlHttpHeader' => [],
-
                 'curlSslVerifyPeer' => true,
                 'curlSslVerifyHost' => 2,
                 'curlCaInfo' => realpath(__DIR__) . '/cert/cacert.pem',

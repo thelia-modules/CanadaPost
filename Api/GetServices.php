@@ -14,7 +14,6 @@
 namespace CanadaPost\Api;
 
 use CanadaPost\Api\Response\GetServicesResponseApi;
-use Thelia\Model\Country;
 
 /**
  * Class GetRates
