@@ -51,7 +51,7 @@
                             {form_field form=$form field="enabled"}
                             <div class="form-group">
                                 <label class="control-label" for="{$label_attr.for}">
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value enabled' d="canadapost.bo.default"}" />
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} />
                                     {$label}
                                     {if $required}<span class="required">*</span>{/if}
 
@@ -69,7 +69,7 @@
                             {form_field form=$form field="mode_production"}
                             <div class="form-group">
                                 <label class="control-label" for="{$label_attr.for}">
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value mode_production' d="canadapost.bo.default"}" />
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} />
                                     {$label}
                                     {if $required}<span class="required">*</span>{/if}
 
@@ -96,7 +96,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value customer_number' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -114,7 +114,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value username' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -132,7 +132,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value password' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -150,7 +150,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value test_username' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -168,7 +168,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value test_password' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -177,7 +177,7 @@
                             {form_field form=$form field="quote_type_commercial"}
                             <div class="form-group">
                                 <label class="control-label" for="{$label_attr.for}">
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value quote_type_commercial' d="canadapost.bo.default"}" />
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} />
                                     {$label}
                                     {if $required}<span class="required">*</span>{/if}
 
@@ -204,7 +204,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value contract_id' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -222,7 +222,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value origin_postalcode' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}
@@ -240,7 +240,7 @@
                                     {/form_error}
                                 </label>
 
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value tracking_url' d="canadapost.bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" />
                                 {if ! empty($label_attr.help)}
                                     <span class="help-block">{$label_attr.help}</span>
                                 {/if}

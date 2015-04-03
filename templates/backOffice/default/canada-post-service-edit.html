@@ -22,7 +22,7 @@
 
             <div class="general-block-decorator">
                 <div class="title title-without-tabs">
-                    {intl l="CanadaPostService edit" d="canadapost.bo.default"}
+                    {intl l="Canada Post Service edit" d="canadapost.bo.default"}
                 </div>
 
                 <div class="form-container">
@@ -56,7 +56,7 @@
 
                                             {form_error form=$form field="code"}{$message}{/form_error}
 
-                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$CODE}" placeholder="{intl l='The CanadaPostService code'}" />
+                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$CODE}" placeholder="{intl l='The service code'}" />
                                         </div>
                                     {/form_field}
                                     {form_field form=$form field="title"}
@@ -68,7 +68,7 @@
 
                                             {form_error form=$form field="title"}{$message}{/form_error}
 
-                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$TITLE}" placeholder="{intl l='The CanadaPostService title'}" />
+                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$TITLE}" placeholder="{intl l='The service title'}" />
                                         </div>
                                     {/form_field}
                                     {form_field form=$form field="chapo"}
@@ -80,7 +80,7 @@
 
                                             {form_error form=$form field="chapo"}{$message}{/form_error}
 
-                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The CanadaPostService chapo'}">{$CHAPO}</textarea>
+                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The service chapo'}">{$CHAPO}</textarea>
                                         </div>
                                     {/form_field}
 

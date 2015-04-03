@@ -17,11 +17,11 @@ class CanadaPostServiceUpdateForm extends BaseCanadaPostServiceUpdateForm
     public function getTranslationKeys()
     {
         return array(
-            "id" => "id",
-            "visible" => "visible",
-            "code" => "code",
-            "title" => "title",
-            "chapo" => "chapo",
+            "id" => "id", // trans("id")
+            "visible" => "visible", // trans("visible")
+            "code" => "code", // trans("code")
+            "title" => "title", // trans("title")
+            "chapo" => "chapo", // trans("chapo")
         );
     }
 }
