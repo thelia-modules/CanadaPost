@@ -33,16 +33,10 @@ config:
     type: text
     required: false
     help: For commercial/contracted rates only
-  insurance: checkbox
   origin_postalcode:
     type: text
     label: Origin Zip/Postal Code
     help: from which the parcel will be sent
-  disallowed_services:
-    type: text
-    required: false
-    label: Disallowed Shipping Methods
-    help: The Canada Post services not to be offered
   tracking_url:
     type: text
     required: false

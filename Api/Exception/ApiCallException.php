@@ -46,8 +46,8 @@ class ApiCallException extends \RuntimeException
         $errorMessage = '';
 
         /** @var \Exception $error */
-        foreach ($this->response->getErrors() as $code => $message) {
-            $errorMessage .= sprintf("[%s] %s%s", $code, $message, $separator);
+        foreach ($this->response->getErrors() as $error) {
+            $errorMessage .= sprintf("[%s] %s%s", $error[0], $error[1], $separator);
         }
 
         return rtrim($errorMessage, $separator);

@@ -54,9 +54,7 @@ class CanadaPostConfigForm extends BaseForm
         $this->addTestPasswordField($translationKeys, $fieldsIdKeys);
         $this->addQuoteTypeCommercialField($translationKeys, $fieldsIdKeys);
         $this->addContractIdField($translationKeys, $fieldsIdKeys);
-        $this->addInsuranceField($translationKeys, $fieldsIdKeys);
         $this->addOriginPostalcodeField($translationKeys, $fieldsIdKeys);
-        $this->addDisallowedServicesField($translationKeys, $fieldsIdKeys);
         $this->addTrackingUrlField($translationKeys, $fieldsIdKeys);
     }
 
@@ -214,23 +212,6 @@ class CanadaPostConfigForm extends BaseForm
         ;
     }
 
-    protected function addInsuranceField(array $translationKeys, array $fieldsIdKeys)
-    {
-        $this->formBuilder
-            ->add("insurance", "checkbox", array(
-                "label" => $this->readKey("insurance", $translationKeys),
-                "label_attr" => [
-                    "for" => $this->readKey("insurance", $fieldsIdKeys),
-                    "help" => $this->readKey("help.insurance", $translationKeys)
-                ],
-                "required" => false,
-                "constraints" => array(
-                ),
-                "value" => CanadaPost::getConfigValue(CanadaPostConfigValue::INSURANCE, false),
-            ))
-        ;
-    }
-
     protected function addOriginPostalcodeField(array $translationKeys, array $fieldsIdKeys)
     {
         $this->formBuilder
@@ -245,23 +226,6 @@ class CanadaPostConfigForm extends BaseForm
                     new NotBlank(),
                 ),
                 "data" => CanadaPost::getConfigValue(CanadaPostConfigValue::ORIGIN_POSTALCODE),
-            ))
-        ;
-    }
-
-    protected function addDisallowedServicesField(array $translationKeys, array $fieldsIdKeys)
-    {
-        $this->formBuilder
-            ->add("disallowed_services", "text", array(
-                "label" => $this->readKey("disallowed_services", $translationKeys),
-                "label_attr" => [
-                    "for" => $this->readKey("disallowed_services", $fieldsIdKeys),
-                    "help" => $this->readKey("help.disallowed_services", $translationKeys)
-                ],
-                "required" => false,
-                "constraints" => array(
-                ),
-                "data" => CanadaPost::getConfigValue(CanadaPostConfigValue::DISALLOWED_SERVICES),
             ))
         ;
     }
@@ -314,9 +278,7 @@ class CanadaPostConfigForm extends BaseForm
             "test_password" => "test_password",
             "quote_type_commercial" => "quote_type_commercial",
             "contract_id" => "contract_id",
-            "insurance" => "insurance",
             "origin_postalcode" => "origin_postalcode",
-            "disallowed_services" => "disallowed_services",
             "tracking_url" => "tracking_url",
         );
     }

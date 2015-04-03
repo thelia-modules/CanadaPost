@@ -42,9 +42,7 @@ class CanadaPostConfigController extends BaseAdminController
             CanadaPost::setConfigValue(CanadaPostConfigValue::TEST_PASSWORD, is_bool($data["test_password"]) ? (int) ($data["test_password"]) : $data["test_password"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::QUOTE_TYPE_COMMERCIAL, is_bool($data["quote_type_commercial"]) ? (int) ($data["quote_type_commercial"]) : $data["quote_type_commercial"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::CONTRACT_ID, is_bool($data["contract_id"]) ? (int) ($data["contract_id"]) : $data["contract_id"]);
-            CanadaPost::setConfigValue(CanadaPostConfigValue::INSURANCE, is_bool($data["insurance"]) ? (int) ($data["insurance"]) : $data["insurance"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::ORIGIN_POSTALCODE, is_bool($data["origin_postalcode"]) ? (int) ($data["origin_postalcode"]) : $data["origin_postalcode"]);
-            CanadaPost::setConfigValue(CanadaPostConfigValue::DISALLOWED_SERVICES, is_bool($data["disallowed_services"]) ? (int) ($data["disallowed_services"]) : $data["disallowed_services"]);
             CanadaPost::setConfigValue(CanadaPostConfigValue::TRACKING_URL, is_bool($data["tracking_url"]) ? (int) ($data["tracking_url"]) : $data["tracking_url"]);
         } catch (FormValidationException $ex) {
             // Invalid data entered

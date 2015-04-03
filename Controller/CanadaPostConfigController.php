@@ -6,7 +6,11 @@
 
 namespace CanadaPost\Controller;
 
+use CanadaPost\Api\Exception\ApiCallException;
+use CanadaPost\CanadaPost;
 use CanadaPost\Controller\Base\CanadaPostConfigController as BaseCanadaPostConfigController;
+use Thelia\Core\Security\AccessManager;
+use Thelia\Core\Security\Resource\AdminResources;
 
 /**
  * Class CanadaPostConfigController
@@ -14,4 +18,68 @@ use CanadaPost\Controller\Base\CanadaPostConfigController as BaseCanadaPostConfi
  */
 class CanadaPostConfigController extends BaseCanadaPostConfigController
 {
+    public function testAction()
+    {
+        $response = $this->checkAuth(AdminResources::MODULE, CanadaPost::getModuleCode(), AccessManager::UPDATE);
+
+        if (null !== $response) {
+            return $response;
+        }
+
+        $this->checkXmlHttpRequest();
+
+        $responseData = [
+            "success" => false,
+            "priceQuotes" => [],
+            "statusCode" => 200,
+            "errors" => []
+        ];
+        $errors = [];
+
+        $country = strtoupper($this->getRequest()->request->get('country', ''));
+        $cp = $this->getRequest()->request->get('postalcode', '');
+        if (in_array($country, ['CA', 'US']) && empty($cp)) {
+            $errors[] = $this->getTranslator()->trans(
+                "You should provide the postal/zip code for CA and US country",
+                [],
+                CanadaPost::MESSAGE_DOMAIN
+            );
+        }
+        $weight = floatval(str_replace(",", ".", $this->getRequest()->request->get('weight', '')));
+        if (0 == $weight) {
+            $errors[] = $this->getTranslator()->trans(
+                "The weight is required",
+                [],
+                CanadaPost::MESSAGE_DOMAIN
+            );
+        }
+
+        if (0 === count($errors)) {
+
+            $currency = $this->getRequest()->getSession()->getCurrency(true);
+
+            try {
+                $priceQuotes = CanadaPost::getRates($country, $cp, $weight, $currency);
+                $responseData["priceQuotes"] = $priceQuotes;
+                $responseData["success"] = true;
+            } catch (ApiCallException $ex) {
+                $responseData['statusCode'] = $ex->getResponse()->getStatusCode();
+                $errors = array_map(
+                    function ($el) {
+                        return sprintf("[%s] %s", $el[0], $el[1]);
+                    },
+                    $ex->getErrors()
+                );
+                $responseData["errors"] = $errors;
+            } catch (\Exception $ex) {
+                $errors = [$ex->getMessage()];
+                $responseData["errors"] = $errors;
+            }
+        } else {
+            $responseData["errors"] = $errors;
+        }
+
+        return $this->jsonResponse(json_encode($responseData));
+    }
 }
+
