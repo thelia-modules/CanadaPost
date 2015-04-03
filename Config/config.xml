@@ -8,46 +8,21 @@
     <loop name="canada-post-service" class="CanadaPost\Loop\CanadaPostService"/>
     <loop name="canada-post-rate" class="CanadaPost\Loop\Rates"/>
   </loops>
-  <forms>
-    <!--
-            <form name="MyFormName" class="CanadaPost\Form\MySuperForm" />
-            -->
-    <form name="canada_post_order.create" class="CanadaPost\Form\CanadaPostOrderCreateForm"/>
-    <form name="canada_post_order.update" class="CanadaPost\Form\CanadaPostOrderUpdateForm"/>
+
+    <forms>
     <form name="canada_post_service.create" class="CanadaPost\Form\CanadaPostServiceCreateForm"/>
     <form name="canada_post_service.update" class="CanadaPost\Form\CanadaPostServiceUpdateForm"/>
     <form name="canadapost.configuration" class="CanadaPost\Form\CanadaPostConfigForm"/>
   </forms>
-  <commands>
-    <!--
-            <command class="CanadaPost\Command\MySuperCommand" />
-            -->
-  </commands>
-  <!--
-      <services>
 
-      </services>
-      -->
-  <hooks>
+    <hooks>
     <hook id="canadapost.hook" class="CanadaPost\Hook\CanadaPostHook" scope="request">
       <tag name="hook.event_listener" event="order-delivery.extra" type="front"/>
       <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front"/>
     </hook>
   </hooks>
-  <!--
-      <exports>
 
-      </exports>
-      -->
-  <!--
-      <imports>
-
-      </imports>
-      -->
-  <services>
-    <service id="action.canadapost.canada_post_order_table" class="CanadaPost\Action\CanadaPostOrderAction">
-      <tag name="kernel.event_subscriber"/>
-    </service>
+    <services>
     <service id="canadapost.form.type.canada_post_order_id" class="CanadaPost\Form\Type\CanadaPostOrderIdType">
       <argument id="thelia.translator" type="service"/>
       <tag name="thelia.form.type"/>
