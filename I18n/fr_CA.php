@@ -12,6 +12,7 @@ return array(
     'For commercial/contracted rates only' => 'Pour obtenir des tarifs réduits pour les clients commerciaux',
     'Origin Postal Code' => 'Code postal d\'origine',
     'Password' => 'mot de passe',
+    'Shipment taxes' => 'Taxes sur les frais de livraison.',
     'Sorry, an error occurred: %err' => 'Désolé, une erreur est apparue : %err',
     'Test password' => 'Mot de passe (en mode test)',
     'Test username' => 'Nom d\'utilisateur (en mode test)',

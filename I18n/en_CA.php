@@ -12,6 +12,7 @@ return array(
     'For commercial/contracted rates only' => 'For commercial/contracted rates only',
     'Origin Postal Code' => 'Origin Postal Code',
     'Password' => 'Password',
+    'Shipment taxes' => 'Shipment taxes',
     'Sorry, an error occurred: %err' => 'Sorry, an error occurred: %err',
     'Test password' => 'Test password',
     'Test username' => 'Test username',
