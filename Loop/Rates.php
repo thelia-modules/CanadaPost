@@ -67,6 +67,7 @@ class Rates extends BaseLoop implements ArraySearchLoopInterface
                 ->set('NAME', $priceQuote['name'])
                 ->set('CODE', $priceQuote['code'])
                 ->set('PRICE', $priceQuote['price'])
+                ->set('TAXES', $priceQuote['taxes'])
                 ->set('TRANSIT_TIME', $priceQuote['transit-time'])
                 ->set('DELIVERY_DATE', $priceQuote['delivery-date']);
 
