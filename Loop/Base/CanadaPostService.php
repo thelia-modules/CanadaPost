@@ -79,7 +79,7 @@ class CanadaPostService extends BaseI18nLoop implements PropelSearchLoopInterfac
     {
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("id"),
-            Argument::createBooleanOrBothTypeArgument("visible", BooleanOrBothType::ANY),
+            Argument::createBooleanOrBothTypeArgument("visible", 1),
             Argument::createAnyTypeArgument("code"),
             Argument::createAnyTypeArgument("title"),
             Argument::createEnumListTypeArgument(
