@@ -25,12 +25,16 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success">
+
+                    {$serviceCount={count type="canada-post-service" visible="1"}}
+                    <div class="alert alert-{if $serviceCount == 0}danger{else}success{/if}">
+                        {if $serviceCount == 0}{intl l="No services are configured yet !" d="canadapost.bo.default"}<br />{/if}
                         {intl l="When the module will be configured properly, please " d="canadapost.bo.default"}
                         <a href="{url path="/admin/module/CanadaPost/canada_post_service"}">
                             {intl l="configure Canada Post services" d="canadapost.bo.default"}
                         </a>
                     </div>
+
                     {if $success}
                         <div class="alert alert-success">
                             {intl l="Configuration correctly saved" d="canadapost.bo.default"}
