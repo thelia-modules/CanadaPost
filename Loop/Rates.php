@@ -29,7 +29,7 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 class Rates extends BaseLoop implements ArraySearchLoopInterface
 {
     /* set countable to false since we need to preserve keys */
-    protected $countable = false;
+    protected $countable = true;
 
     /**
      * @return ArgumentCollection

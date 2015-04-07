@@ -45,7 +45,10 @@ class CanadaPostServiceController extends BaseCanadaPostServiceController
 
                 foreach ($services as $service) {
 
-                    if (null === $canadaPostService = CanadaPostServiceQuery::create()->findOneByCode($service['code'])) {
+                    $canadaPostService = null;
+                    $canadaPostService = CanadaPostServiceQuery::create()->findOneByCode($service['code']);
+
+                    if (null === $canadaPostService) {
                         $canadaPostService = new CanadaPostService();
                         $canadaPostService
                             ->setCode($service['code'])

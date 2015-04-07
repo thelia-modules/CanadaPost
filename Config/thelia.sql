@@ -9,7 +9,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `canada_post_order`;
 
-CREATE TABLE `canada_post_order`
+CREATE TABLE IF NOT EXISTS `canada_post_order`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `address_id` INTEGER,

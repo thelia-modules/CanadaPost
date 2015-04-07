@@ -26,6 +26,20 @@
             <div class="row">
                 <div class="col-md-12">
 
+                    {$canadianDollar=0}
+                    {loop name="currency" type="currency"}
+                        {if $ISOCODE == 'CAD'}{$canadianDollar=1}{/if}
+                    {/loop}
+
+                    {if $canadianDollar == 0}
+                        <div class="alert alert-danger">
+                            {intl l="The Canadian Dollar currency has not been found. You have to create it." d="canadapost.bo.default"}
+                            <a href="{url path="/admin/configuration/currencies"}">
+                                {intl l="Create Canadian Dollar currency." d="canadapost.bo.default"}
+                            </a>
+                        </div>
+                    {/if}
+
                     {$serviceCount={count type="canada-post-service" visible="1"}}
                     <div class="alert alert-{if $serviceCount == 0}danger{else}success{/if}">
                         {if $serviceCount == 0}{intl l="No services are configured yet !" d="canadapost.bo.default"}<br />{/if}
@@ -317,9 +331,6 @@
 
     <script id="tpl-price-quotes" type="text/html">
         <table class="table table-striped table-condensed">
-            <caption class="clearfix">
-                {intl l='Something goes wr'}
-            </caption>
             <thead>
             <tr>
                 <th>{intl l="Code" d="canadapost.bo.default"}</th>
@@ -345,7 +356,6 @@
 
     <script id="tpl-errors" type="text/html">
         <h4>{intl l="Errors:" d="canadapost.bo.default"}</h4>
-
         <% _.each(errors, function(error, index) { %>
         <p><%- error %></p>
         <% }); %>

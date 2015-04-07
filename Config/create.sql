@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `canada_post_service`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `visible` TINYINT DEFAULT 0 NOT NULL,
-    `code` INTEGER,
+    `code` VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

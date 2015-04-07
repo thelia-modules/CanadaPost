@@ -289,6 +289,11 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
         // convert in the right currency
         if ("CAD" !== $currency->getCode()) {
             $canadianDollar = self::getCanadianDollarCurrency();
+
+            if (null === $canadianDollar) {
+                throw new \RuntimeException("Canadian Dollar Currency not found");
+            }
+
             $conversionRate = $currency->getRate() / $canadianDollar->getRate();
 
             foreach ($priceQuotes as &$priceQuote) {

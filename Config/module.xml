@@ -12,7 +12,6 @@
         <subtitle>Module de livraison pour Postes Canada</subtitle>
     </descriptive>
     <logo>logo.jpg</logo>
-    <images-folder>images</images-folder>
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>

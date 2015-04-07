@@ -22,7 +22,9 @@
 
     $(document).ready(function () {
         $('#delivery-module-list-block')
-            .on('change', "input:radio", checkCanadaPost);
+                .on('change', "input:radio", checkCanadaPost);
+
+        checkCanadaPost();
     });
 
 })(jQuery);

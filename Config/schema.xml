@@ -29,8 +29,8 @@
         <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
 
         <column defaultValue="0" name="visible" required="true" type="TINYINT" />
-        <column name="code" required="false" type="VARCHAR" />
-        <column name="title" size="255" type="VARCHAR" />
+        <column name="code" required="false" type="VARCHAR" size="255" />
+        <column name="title" type="VARCHAR" size="255" />
         <column name="chapo" type="LONGVARCHAR" />
 
         <behavior name="i18n">
