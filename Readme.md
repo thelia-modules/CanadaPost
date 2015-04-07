@@ -44,9 +44,6 @@ you have to first get the list of services from Canada Post. A button at the top
 Once the list is imported, you can customize the title of the service and select if it will be available for the customer with
 the visible attribute.
 
-## Hook
-
-If your module use one or more hook, fill this part. Explain which hooks are used.
 
 ## Loop
 
@@ -121,7 +118,3 @@ This loop is used to get the detail of the service used for an order.
 |$ORDER_ADDRESS_ID | The order address id of the customer (order) |
 |$SERVICE_ID | The Canada Post service id |
 
-
-## Other ?
-
-If you have other think to put, feel free to complete your readme as you want.
