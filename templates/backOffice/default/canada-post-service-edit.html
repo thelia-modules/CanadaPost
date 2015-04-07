@@ -44,7 +44,7 @@
                         {/form_field}
                         {form_hidden_fields form=$form}
 
-                        {loop name="canada_post_service_update" type="canada-post-service" backend_context="yes" id=$canada_post_service_id lang=$edit_language_id}
+                        {loop name="canada_post_service_update" type="canada-post-service" backend_context="yes" id=$canada_post_service_id lang=$edit_language_id visible="*"}
                             <div class="row">
                                 <div class="col-md-12">
                                     {form_field form=$form field="code"}

@@ -81,7 +81,7 @@
                     </thead>
 
                     <tbody>
-                    {loop name="canada-post-service-list" type="canada-post-service" order=$order}
+                    {loop name="canada-post-service-list" type="canada-post-service" order=$order visible="*"}
                         <tr>
                             <td>
                                 <a href="{url path='/admin/module/CanadaPost/canada_post_service/edit' canada_post_service_id=$ID}">{$ID}</a>

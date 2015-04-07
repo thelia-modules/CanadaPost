@@ -11,20 +11,18 @@
 
         if ($canadaPost.prop("checked")) {
             $canadaPostContainer.removeClass('hidden');
+            // check if a service is selected.
+            if ($('input.canada-post-service:checked').length == 0) {
+                $('input.canada-post-service').eq(0).prop('checked', true);
+            }
         } else {
             $canadaPostContainer.addClass('hidden');
         }
     };
 
     $(document).ready(function () {
-
         $('#delivery-module-list-block')
             .on('change', "input:radio", checkCanadaPost);
-        /*
-            .on('change', '#delivery-method_' + canadaPostId, checkCanadaPost)
-            .on('click', '#delivery-method_' + canadaPostId, checkCanadaPost);
-        */
-
     });
 
 })(jQuery);

@@ -27,9 +27,6 @@ class CanadaPostConfigValue
     const TEST_PASSWORD = "test_password";
     const QUOTE_TYPE_COMMERCIAL = "quote_type_commercial";
     const CONTRACT_ID = "contract_id";
-    const INSURANCE = "insurance";
     const ORIGIN_POSTALCODE = "origin_postalcode";
-    const DISALLOWED_SERVICES = "disallowed_services";
     const TRACKING_URL = "tracking_url";
 }
-

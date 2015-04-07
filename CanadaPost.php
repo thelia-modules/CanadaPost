@@ -13,7 +13,6 @@ use CanadaPost\Model\Map\CanadaPostServiceTableMap;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Translation\Translator;
-use Thelia\CurrencyConverter\Tests\CurrencyConverterTest;
 use Thelia\Install\Database;
 use Thelia\Log\Tlog;
 use Thelia\Model\Address;
@@ -103,9 +102,7 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
             CanadaPostConfigValue::TEST_PASSWORD => '',
             CanadaPostConfigValue::CONTRACT_ID => '',
             CanadaPostConfigValue::QUOTE_TYPE_COMMERCIAL => 0,
-            CanadaPostConfigValue::INSURANCE => 0,
             CanadaPostConfigValue::ORIGIN_POSTALCODE => '',
-            CanadaPostConfigValue::DISALLOWED_SERVICES => '',
             CanadaPostConfigValue::TRACKING_URL => 'http://www.canadapost.ca/cpotools/apps/track/personal/findByTrackNumber?trackingNumber=%tracking-number%&LOCALE=%locale%',
         ];
 
@@ -220,7 +217,8 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
 
         $orderPostage = new OrderPostage(
             $priceQuote['price'],
-            $priceQuote['taxes']
+            $priceQuote['taxes'],
+            $this->trans("Shipment taxes")
         );
 
         return $orderPostage;
@@ -282,7 +280,7 @@ class CanadaPost extends BaseModule implements DeliveryModuleInterface
             ->find()
             ->toArray();
 
-        for ($i = 0 ; $i < count($priceQuotes) ; $i++) {
+        for ($i = 0; $i < count($priceQuotes); $i++) {
             if (!in_array($priceQuotes[$i]['code'], $availableServices)) {
                 unset($priceQuotes[$i]);
             }
