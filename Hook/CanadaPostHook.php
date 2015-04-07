@@ -72,16 +72,21 @@ class CanadaPostHook extends BaseHook
     }
 
 
-    public function onOrderEditBillBottom(HookRenderEvent $event)
+    public function onOrderServiceInformation(HookRenderEvent $event)
     {
         $orderId = $event->getArgument('order_id');
+        // in pdf argument is just order, not order_id
+        if (null === $orderId) {
+            $orderId = $event->getArgument('order');
+        }
+
         if (null !== $orderId) {
             $order = OrderQuery::create()->findPk($orderId);
 
             if (null !== $order && $order->getDeliveryModuleId() == CanadaPost::getModuleId()) {
                 $event->add(
                     $this->render(
-                        'order-edit-bill-bottom.html',
+                        'order-service-information.html',
                         [
                             'order_address_id' => $order->getDeliveryOrderAddressId()
                         ]

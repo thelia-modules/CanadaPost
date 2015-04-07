@@ -20,7 +20,10 @@
         <hook id="canadapost.hook" class="CanadaPost\Hook\CanadaPostHook" scope="request">
             <tag name="hook.event_listener" event="order-delivery.extra" type="front"/>
             <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front"/>
-            <tag name="hook.event_listener" event="order-edit.bill-bottom" type="back"/>
+            <tag name="hook.event_listener" event="order-edit.bill-bottom" type="back" method="onOrderServiceInformation"/>
+            <tag name="hook.event_listener" event="delivery.after-addresses" type="pdf" method="onOrderServiceInformation"/>
+            <tag name="hook.event_listener" event="invoice.after-addresses" type="pdf" method="onOrderServiceInformation"/>
+
         </hook>
     </hooks>
 
